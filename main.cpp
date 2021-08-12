@@ -1,122 +1,163 @@
+// A Backtracking program in
+// C++ to solve Sudoku problem
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
-  public:
-    void Build(int index, int start, int end, vector < int > & Tree, vector < int > & A) {
-      if (start == end)
-        Tree[index] = A[start];
+// UNASSIGNED is used for empty
+// cells in sudoku grid
+#define UNASSIGNED 0
 
-      else {
-        int mid = start + (end - start) / 2,
-          Left_Child = 2 * index + 1,
-          Right_Child = Left_Child + 1;
+// N is used for the size of Sudoku grid.
+// Size will be NxN
+#define N 9
 
-        Build(Left_Child, start, mid, Tree, A);
-        Build(Right_Child, mid + 1, end, Tree, A);
+// This function finds an entry in grid
+// that is still unassigned
+bool FindUnassignedLocation(int grid[N][N],
+							int& row, int& col);
 
-        Tree[index] = Tree[Left_Child] + Tree[Right_Child];
-      }
-    }
+// Checks whether it will be legal
+// to assign num to the given row, col
+bool isSafe(int grid[N][N], int row,
+			int col, int num);
 
-    int Query(int index, int start, int end, int L, int R, vector < int > & Tree) {
-      // Non-Overlapping Case
-      if (L > end || R < start)
-        return 0;
+/* Takes a partially filled-in grid and attempts
+to assign values to all unassigned locations in
+such a way to meet the requirements for
+Sudoku solution (non-duplication across rows,
+columns, and boxes) */
+bool SolveSudoku(int grid[N][N])
+{
+	int row, col;
 
-      //  Complete Overlap
-      if (L <= start && R >= end)
-        return Tree[index];
+	// If there is no unassigned location,
+	// we are done
+	if (!FindUnassignedLocation(grid, row, col))
+		// success!
+		return true;
 
-      // Partial Overlap
-      int mid = start + (end - start) / 2,
-        Left_Child = 2 * index + 1,
-        Right_Child = Left_Child + 1;
+	// Consider digits 1 to 9
+	for (int num = 1; num <= 9; num++)
+	{
+		
+		// Check if looks promising
+		if (isSafe(grid, row, col, num))
+		{
+			
+			// Make tentative assignment
+			grid[row][col] = num;
 
-      return Query(Left_Child, start, mid, L, R, Tree) + Query(Right_Child, mid + 1, end, L, R, Tree);
+			// Return, if success
+			if (SolveSudoku(grid))
+				return true;
 
-    }
+			// Failure, unmake & try again
+			grid[row][col] = UNASSIGNED;
+		}
+	}
+	
+	// This triggers backtracking
+	return false;
+}
 
-    void SieveofErastothens(int N, vector < bool > & isPrime) {
-      for (int i = 2; i * i <= N; i++)
-        if (isPrime[i])
-          for (int j = 2 * i; j <= N; j += i)
-            isPrime[j] = false;
-    }
+/* Searches the grid to find an entry that is
+still unassigned. If found, the reference
+parameters row, col will be set the location
+that is unassigned, and true is returned.
+If no unassigned entries remain, false is returned. */
+bool FindUnassignedLocation(int grid[N][N],
+							int& row, int& col)
+{
+	for (row = 0; row < N; row++)
+		for (col = 0; col < N; col++)
+			if (grid[row][col] == UNASSIGNED)
+				return true;
+	return false;
+}
 
-    void Update(int index, int start, int end, int UpdateLocation, int UpdateValue, vector < int > & Tree) {
-      // We will not update the values at other locations
-      if (UpdateLocation < start || UpdateLocation > end)
-        return;
+/* Returns a boolean which indicates whether
+an assigned entry in the specified row matches
+the given number. */
+bool UsedInRow(int grid[N][N], int row, int num)
+{
+	for (int col = 0; col < N; col++)
+		if (grid[row][col] == num)
+			return true;
+	return false;
+}
 
-      // If the function comes here and start = end, it automatically implies that start = UpdateLocation = end
-      if (start == end)
-        Tree[index] += UpdateValue;
+/* Returns a boolean which indicates whether
+an assigned entry in the specified column
+matches the given number. */
+bool UsedInCol(int grid[N][N], int col, int num)
+{
+	for (int row = 0; row < N; row++)
+		if (grid[row][col] == num)
+			return true;
+	return false;
+}
 
-      // Updating Values in the Segment Tree only where it is needed using Recursion
-      else {
-        int mid = start + (end - start) / 2,
-          Left_Child = 2 * index + 1,
-          Right_Child = Left_Child + 1;
+/* Returns a boolean which indicates whether
+an assigned entry within the specified 3x3 box
+matches the given number. */
+bool UsedInBox(int grid[N][N], int boxStartRow,
+			int boxStartCol, int num)
+{
+	for (int row = 0; row < 3; row++)
+		for (int col = 0; col < 3; col++)
+			if (grid[row + boxStartRow]
+					[col + boxStartCol] ==
+									num)
+				return true;
+	return false;
+}
 
-        Update(Left_Child, start, mid, UpdateLocation, UpdateValue, Tree);
-        Update(Right_Child, mid + 1, end, UpdateLocation, UpdateValue, Tree);
+/* Returns a boolean which indicates whether
+it will be legal to assign num to the given
+row, col location. */
+bool isSafe(int grid[N][N], int row,
+			int col, int num)
+{
+	/* Check if 'num' is not already placed in
+	current row, current column
+	and current 3x3 box */
+	return !UsedInRow(grid, row, num)
+		&& !UsedInCol(grid, col, num)
+		&& !UsedInBox(grid, row - row % 3,
+						col - col % 3, num)
+		&& grid[row][col] == UNASSIGNED;
+}
 
-        Tree[index] = Tree[Left_Child] + Tree[Right_Child];
+/* A utility function to print grid */
+void printGrid(int grid[N][N])
+{
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < N; col++)
+			cout << grid[row][col] << " ";
+		cout << endl;
+	}
+}
 
-      }
-    }
-
-    vector < int > solve(vector < int > & A, vector < string > & B, vector < int > & C, vector < int > & D) {
-
-      vector < int > Answer;
-      int N = INT_MIN;
-
-      // For finding the maximum number till which we have to check if number is prime and storing the list of prime numbers    
-      for (int i = 0; i < A.size(); i++)
-        N = max(N, A[i]);
-
-      for (int i = 0; i < D.size(); i++)
-        N = max(N, D[i]);
-
-      vector < bool > isPrime(N + 1, true);
-
-      isPrime[0] = false;
-      isPrime[1] = false;
-
-      SieveofErastothens(N, isPrime);
-
-      // Converting all the Numbers in A to either 0 or 1 depending on whether they are prime or not.    
-      for (int i = 0; i < A.size(); i++)
-        A[i] = (isPrime[A[i]]) ? 1 : 0;
-
-      // Now the segment Tree contains Sub - Queries for the number of Primes in a given Range.
-      vector < int > Tree(4 * A.size(), 0);
-      Build(0, 0, A.size() - 1, Tree, A);
-
-      for (int i = 0; i < B.size(); i++) {
-        if (B[i][0] == 'A')
-          Answer.push_back(Query(0, 0, A.size() - 1, C[i] - 1, D[i] - 1, Tree));
-
-        else {
-          // if the Number at given index C[i] in A is prime and D[i] is not prime    
-          if (A[C[i] - 1] == 1 && !isPrime[D[i]]) {
-            Update(0, 0, A.size() - 1, C[i] - 1, -1, Tree);
-            A[C[i] - 1] = 0;
-          }
-
-          // if the Number at give index C[i] in A is not prime and D[i] is prime
-          else if (A[C[i] - 1] == 0 && isPrime[D[i]]) {
-            Update(0, 0, A.size() - 1, C[i] - 1, 1, Tree);
-            A[C[i] - 1] = 1;
-          }
-        }
-      }
-      return Answer;
-    }
-};
-
+// Driver Code
 int main()
 {
-    return 0;
+	// 0 means unassigned cells
+	int grid[N][N] = { { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
+					{ 5, 2, 0, 0, 0, 0, 0, 0, 0 },
+					{ 0, 8, 7, 0, 0, 0, 0, 3, 1 },
+					{ 0, 0, 3, 0, 1, 0, 0, 8, 0 },
+					{ 9, 0, 0, 8, 6, 3, 0, 0, 5 },
+					{ 0, 5, 0, 0, 9, 0, 6, 0, 0 },
+					{ 1, 3, 0, 0, 0, 0, 2, 5, 0 },
+					{ 0, 0, 0, 0, 0, 0, 0, 7, 4 },
+					{ 0, 0, 5, 2, 0, 6, 3, 0, 0 } };
+	if (SolveSudoku(grid) == true)
+		printGrid(grid);
+	else
+		cout << "No solution exists";
+
+	return 0;
 }
+
+// This is code is contributed by rathbhupendra
