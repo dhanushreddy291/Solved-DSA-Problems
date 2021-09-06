@@ -6,6 +6,8 @@ class Solution {
     int firstMissingPositive(vector <int> &nums);
 }
 
+// Approach is to use the array itself as an HashMap if element at an index is positive it 
+// signifies there is no element present in the array.
 int Solution::firstMissingPositive(vector <int> &nums) {
     for (auto &num : nums)
         if (num < 1)
