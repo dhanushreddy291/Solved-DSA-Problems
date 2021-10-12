@@ -15,7 +15,7 @@ class Solution {
                 ListNode first = head, second = head.next, third = head.next.next;
                 second.next = first;
                 first.next = swapPairs (third);
-                head = second;
+                return second;
             }
         }
         return head;
