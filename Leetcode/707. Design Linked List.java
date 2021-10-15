@@ -1,9 +1,5 @@
 class MyLinkedList {
- ["MyLinkedList","addAtHead","addAtHead","addAtHead","addAtIndex","deleteAtIndex","addAtHead","addAtTail","get","addAtHead","addAtIndex","addAtHead"]
- [[],[7],[2],[1],[3,0],[2],[6],[4],[4],[4],[5,0],[6]]
-
- [null,null,null,null,null,null,null,null,-1,null,null,null]
- [null,null,null,null,null,null,null,null,4,null,null,null]
+    
     class ListNode {
         int val;
         ListNode next;
