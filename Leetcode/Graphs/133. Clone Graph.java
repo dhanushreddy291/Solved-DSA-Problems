@@ -1,3 +1,17 @@
+class Solution {
+    private HashMap <Node, Node> Map = new HashMap<>();
+    public Node cloneGraph(Node node) {
+        if (node != null) {
+            if (Map.containsKey(node)) return Map.get(node);
+            Node temp = new Node(node.val);
+            Map.put(node, temp);
+            for (Node Neighbor : node.neighbors)
+                temp.neighbors.add(cloneGraph(Neighbor));
+            return temp;
+        }
+        return node;
+    }
+}
 /*
 // Definition for a Node.
 class Node {
@@ -17,18 +31,3 @@ class Node {
     }
 }
 */
-
-class Solution {
-    private HashMap <Node, Node> Map = new HashMap<>();
-    public Node cloneGraph(Node node) {
-        if (node != null) {
-            if (Map.containsKey(node)) return Map.get(node);
-            Node temp = new Node(node.val);
-            Map.put(node, temp);
-            for (Node Neighbor : node.neighbors)
-                temp.neighbors.add(cloneGraph(Neighbor));
-            return temp;
-        }
-        return node;
-    }
-}
