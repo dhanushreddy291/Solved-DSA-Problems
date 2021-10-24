@@ -6,8 +6,7 @@ class Solution {
         else if (Start == End - 1) {
             DP.put(Start, Math.min(costs[0], Math.min(costs[1], costs[2])));
             return DP.get(Start);
-        }
-        else {
+        } else {
             int A = costs[0] + minCost(days, Start + 1, End, costs);
             int i = Start;
             while (i < End) {
