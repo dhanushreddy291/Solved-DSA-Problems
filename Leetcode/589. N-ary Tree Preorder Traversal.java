@@ -20,7 +20,6 @@ class Node {
 class Solution {
     public List <Integer> Answer = new ArrayList<>();
     public List<Integer> preorder(Node root) {
-        if (root == null) return Answer;
         PreorderTraverser(root);
         return Answer;
     }
