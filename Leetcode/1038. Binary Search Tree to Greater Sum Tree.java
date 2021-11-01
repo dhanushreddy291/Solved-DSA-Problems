@@ -16,15 +16,12 @@
 class Solution {
     private int Answer = 0;
     public TreeNode bstToGst(TreeNode root) {
-        reverseInorder(root);
+        if (root != null) {
+            bstToGst(root.right);
+            root.val += Answer;
+            Answer = root.val;
+            bstToGst(root.left);
+        }
         return root;
-    }
-    private int reverseInorder(TreeNode root) {
-        if (root == null) return 0;
-        reverseInorder(root.right);
-        root.val += Answer;
-        Answer = root.val;
-        reverseInorder(root.left);
-        return root.val;
     }
 }
