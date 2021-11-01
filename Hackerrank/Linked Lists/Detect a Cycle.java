@@ -10,12 +10,12 @@ A Node is defined as:
 
 boolean hasCycle(Node head) {
     if (head != null) {
-            Node SlowPtr = head, FastPtr = head.next;
-            while (FastPtr != null && FastPtr.next != null) {
-                SlowPtr = SlowPtr.next;
-                FastPtr = FastPtr.next.next;
-                if (SlowPtr == FastPtr) return true;
-            }
+        Node SlowPtr = head, FastPtr = head.next;
+        while (FastPtr != null && FastPtr.next != null) {
+            SlowPtr = SlowPtr.next;
+            FastPtr = FastPtr.next.next;
+            if (SlowPtr == FastPtr) return true;
         }
-        return false;
+    }
+    return false;
 }
