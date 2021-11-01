@@ -18,8 +18,7 @@ private:
             R = Helper(Root -> right);
             Root -> right = R.first;
             return {Root, R.second == NULL ? Root : R.second};
-        }
-        else {
+        } else {
             L = Helper(Root -> left);
             L.second -> right = Root;
             R = Helper(Root -> right);
