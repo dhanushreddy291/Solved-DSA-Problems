@@ -30,7 +30,6 @@ private:
     }
 public:
     TreeNode* increasingBST(TreeNode* root) {
-        if (root == NULL) return NULL;
         return Helper(root).first;
     }
 };
