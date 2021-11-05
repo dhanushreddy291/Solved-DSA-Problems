@@ -25,8 +25,7 @@ public:
                     if (Top -> left) Queue.push (Top -> left);
                     if (Top -> right) Queue.push (Top -> right);
                     t.push_back (Top -> val);
-                } 
-                else {
+                } else {
                     Answer.push_back(t);
                     if (Queue.empty()) break;
                     t.clear();
