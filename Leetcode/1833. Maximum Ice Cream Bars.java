@@ -6,10 +6,8 @@ class Solution {
             Sum += costs[i++];
         }
         if (Sum > coins) {
-            Sum -= costs[i - 1];
-            if (Sum == 0) return 0;
-            return i - 1;
-        }
-        return i;
+            if (Sum == costs[i - 1]) return 0;
+            else return i - 1;
+        } else return i;
     }
 }
