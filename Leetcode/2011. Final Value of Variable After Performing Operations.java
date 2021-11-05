@@ -3,15 +3,10 @@ class Solution {
         int length = operations.length, Ans = 0;
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < 3; j++) {
-                if (operations[i].charAt(j) == '+') {
-                    Ans++;
-                    break;
-                } else if (operations[i].charAt(j) == '-') {
-                    Ans--;
-                    break;
-                }
+                if (operations[i].charAt(j) == '+') Ans++;
+                else if (operations[i].charAt(j) == '-') Ans--;
             }
         }
-        return Ans;
+        return Ans/2;
     }
 }
