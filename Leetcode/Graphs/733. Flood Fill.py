@@ -6,18 +6,17 @@ class Solution:
             return x >= 0 and x < X and y >= 0 and y < Y
         Queue = queue.LifoQueue()
         Queue.put((sr, sc))
-        dx = [-1, 1, 0, 0]
-        dy = [0, 0, -1, 1]
+        ds = [-1, 1, 0, 0]
         Visited = [[False for i in range(len(image[0]))] for j in range(len(image))]
         Visited[sr][sc] = True
         while Queue.qsize() > 0:
             (x, y) = Queue.get()
             for i in range(4):
-                if isValidPos(x + dx[i], y + dy[i], len(image), len(image[0])):
-                    if not Visited[x + dx[i]][y + dy[i]]:
-                        if image[sr][sc] == image[x + dx[i]][y + dy[i]]:
-                            Visited[x + dx[i]][y + dy[i]] = True
-                            Queue.put((x + dx[i], y + dy[i]))
-                            image[x + dx[i]][y + dy[i]] = newColor
+                if isValidPos(x + ds[i], y + ds[3 - i], len(image), len(image[0])):
+                    if not Visited[x + ds[i]][y + ds[3 - i]]:
+                        if image[sr][sc] == image[x + ds[i]][y + ds[3 - i]]:
+                            Visited[x + ds[i]][y + ds[3 - i]] = True
+                            Queue.put((x + ds[i], y + ds[3 - i]))
+                            image[x + ds[i]][y + ds[3 - i]] = newColor
         image[sr][sc] = newColor
         return image
