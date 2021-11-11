@@ -3,7 +3,6 @@ public:
     bool isValidPos (int x, int y, int X, int Y) {
         return (x >= 0 && y >= 0 && x < X && y < Y);
     }
-    
     vector<vector<int>> floodFill(vector<vector<int>>& image, int SR, int SC, int newColor) {
         vector <vector <bool>> Visited (image.size(), vector <bool> (image[0].size(), false));
         queue <pair <int, int>> Queue;
