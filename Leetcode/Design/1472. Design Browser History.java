@@ -1,5 +1,7 @@
 class BrowserHistory {
 
+    Node Current;
+    
     static class Node {
         Node prev, next;
         String Address;
@@ -9,8 +11,6 @@ class BrowserHistory {
             this.prev = Prev;
         }
     }
-    
-    Node Current;
     
     public BrowserHistory(String homepage) {
         Current = new Node(homepage);
@@ -27,11 +27,8 @@ class BrowserHistory {
             temp = Current;
             Current = Current.prev;
         }
-        if (Current != null) return Current.Address;
-        else {
-            Current = temp;
-            return Current.Address;
-        }
+        if (Current == null) Current = temp;
+        return Current.Address;
     }
     
     public String forward(int steps) {
@@ -40,11 +37,8 @@ class BrowserHistory {
             temp = Current;
             Current = Current.next;
         }
-        if (Current != null) return Current.Address;
-        else {
-            Current = temp;
-            return Current.Address;
-        }
+        if (Current == null) Current = temp;
+        return Current.Address;
     }
 }
 
