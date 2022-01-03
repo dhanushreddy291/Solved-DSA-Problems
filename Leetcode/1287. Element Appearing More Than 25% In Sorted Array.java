@@ -5,7 +5,7 @@ class Solution {
             if (arr[i] == arr[i + M])
                 return arr[i];
         }
-        // Answer always exists as per given conditions so wont come till here
+        // Answer always exists as per given conditions so won't come till here anyway.
         throw new RuntimeException("Invalid Input");
     }
 }
