@@ -10,8 +10,8 @@ class Solution {
             stack.push(pushed[i]);
         }
         while (!stack.empty() && stack.peek() == popped[j]) {
-                j++;
-                stack.pop();    
+            j++;
+            stack.pop();    
         }
         return stack.empty();
     }
