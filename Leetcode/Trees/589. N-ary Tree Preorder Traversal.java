@@ -18,8 +18,9 @@ class Node {
 */
 
 class Solution {
-    public List <Integer> Answer = new ArrayList<>();
+    public List <Integer> Answer;
     public List<Integer> preorder(Node root) {
+        Answer = new ArrayList<>()
         PreorderTraverser(root);
         return Answer;
     }
