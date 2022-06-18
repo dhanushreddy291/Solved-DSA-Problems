@@ -21,9 +21,9 @@ class Solution:
             for k in range(4):
                 if isValidPos(x + ds[k], y + ds[3 - k], N, M):
                     dist[x + ds[k]][y + ds[3 - k]] = min(dist[x + ds[k]][y + ds[3 - k]], 1 + dist[x][y])
-                    if !Visited[x + ds[k]][y + ds[3 - k]]:
+                    if not Visited[x + ds[k]][y + ds[3 - k]]:
                         Queue.put((x + ds[k], y + ds[3 - k]))
-                    Visted[x + ds[k]][y + ds[3 - k]] = True
+                    Visited[x + ds[k]][y + ds[3 - k]] = True
             maxDist = max(maxDist, dist[x][y])
         
         return maxDist
