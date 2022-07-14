@@ -1,14 +1,4 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+// Solution using BFS via using a Queue and extra space
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
@@ -39,5 +29,27 @@ public:
             finalAnswer.push_back(Answer[i].back());
         }
         return finalAnswer;
+    }
+};
+
+// Without using any extra space
+class Solution {
+private:
+    int Height(TreeNode* root) {
+        if (root == NULL) return 0; 
+        return 1 + max(Height(root -> left), Height(root -> right));
+    }
+    void inorder(TreeNode* root, int height, vector <int> &Map) {
+        if (root) {
+            inorder(root -> left, height + 1, Map);
+            Map[height] = root -> val;
+            inorder(root -> right, height + 1, Map);
+        }
+    }
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector <int> rightView(Height(root), 0);
+        inorder(root, 0, rightView);
+        return rightView;
     }
 };
